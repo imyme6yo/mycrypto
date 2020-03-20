@@ -16,7 +16,6 @@ ENV PROJECT=myapp
 
 # ARGUMENTs
 ARG DIR=code
-# ARG REQUIREMENTS=requirements.txt
 
 # Install Alpine Packages
 RUN apk update && apk upgrade
@@ -25,9 +24,6 @@ RUN pip install --upgrade pip
 # Create Project by Default Settings
 RUN mkdir ${DIR}
 WORKDIR ${DIR}
-COPY . .
-RUN pip install -r requirements.txt
-WORKDIR ${PROJECT}
 
 #
 # docker build -t vue:$(echo "${PWD##*/}") --build-arg DIR_NAME=$(echo "${PWD##*/}") --build-arg PROJECT_NAME=$(echo "${PWD##*/}") .
