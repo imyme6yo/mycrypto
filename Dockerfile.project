@@ -13,7 +13,7 @@ LABEL email="imyme6yo@gmail.com"
 
 # ARGUMENTs
 ARG DIR=code
-ARG PROJECT=pycript
+ARG PROJECT=pycrypt
 
 # ENV
 ENV DIR=${DIR}

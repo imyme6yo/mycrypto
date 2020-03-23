@@ -1,0 +1,29 @@
+<@startuml pycrpyt>
+|DECRYPTING|
+|#AntiqueWhite|COMMON|
+start
+' Encrypt: plain text is converted to mac and encrypted.
+' Decrypt: cyper is decrypted and converted from mac to each system.
+:system <- get_system();
+:PARSE ARGS;
+if (Is the path directory?) then (directory)
+    :files <- files;
+else (file)
+    :files[0] <- file;
+endif
+
+if (Is the path encrypted?) then (yes)
+    |DECRYPTING|
+    :MAKE new_path;
+    :DECRYPT files to path;
+    :CONVERT NEW LINES to PLATFORM;
+else (no)
+    |ENCRYPTING|
+    :CONVERT NEW LINES to mac;
+    :MAKE new_path;
+    :ENCRYPT files to path;
+endif
+|COMMON|
+:REMOVE path;
+stop
+<@enduml>
