@@ -3,7 +3,7 @@ import os
 import platform
 import unittest
 
-# PyCrypt modules
+# MyCryptTest modules
 from c import get_system
 from c import trace
 
@@ -11,9 +11,9 @@ from c import trace
 from logger import Logger
 
 
-class PyCryptTest(unittest.TestCase):
+class MyCryptoTest(unittest.TestCase):
     def setUp(self):
-        self.logger = Logger("PyCrpytoTest")
+        self.logger = Logger("MyCryptoTest")
 
     def test_get_system(self):
         system = get_system()

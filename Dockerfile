@@ -1,5 +1,6 @@
 # @AUTHOR: imyme6yo "imyme6yo@gmail.com"
 # @DRAFT: 20200320
+# @UPDATE: 20200324
 
 # ARGUMENTs
 ARG VER=3.8.2
@@ -13,7 +14,7 @@ LABEL email="imyme6yo@gmail.com"
 
 # ARGUMENTs
 ARG DIR=code
-ARG PROJECT=pycrypt
+ARG PROJECT=mycrypto
 
 # ENV
 ENV DIR=${DIR}
@@ -21,6 +22,7 @@ ENV PROJECT=${PROJECT}
 
 # Install Alpine Packages
 RUN apk update && apk upgrade
+RUN apk add --no-cached gcc g++ make libffi-dev openssl-dev
 RUN pip install --upgrade pip
 
 # Create Project by Default Settings
