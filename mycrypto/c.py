@@ -19,54 +19,81 @@ def get_system():
     else:
         raise ValueError("MyCrypto: Not supported platform.")
 
+def _encrypt_directory(path, password):
+    parent = pathlib.Path(path).parent
+    basename = os.path.basename(path)
+
+    target = os.path.join(parent, basename.replace("co_", ""))
+    shutil.copytree(path, target)
+    
+    files = []
+    for root, _, filenames in os.walk(target):
+        if filenames:
+            files += [ os.path.join(root, filename) for filename in filenames ]
+            
+    for f in files:
+        _encrypt_file(f, password)
+
+    shutil.rmtree(path)
+
+def _encrypt_file(path, password):
+    parent = pathlib.Path(path).parent
+    basename = os.path.basename(path)
 
 def encrypt(path, password):
-    pass
+    logger.info(path)
+    logger.info(password)
 
-def decrypt(path, password):
-    pass
+    if os.path.isdir(path):
+        _encrypt_directory(path, password)
+    else:
+        shutil.copy(path)
+        _encrypt_file(path, password)
 
-def main(path):
-    abs_path = os.path.abspath(path)
+def _decrypt_directory(path, password):
+    parent = pathlib.Path(path).parent
+    basename = os.path.basename(path)
+
+    target = os.path.join(parent, "co_{}".format(basename))
+    shutil.copytree(path, target)
+    
+    files = []
+    for root, _, filenames in os.walk(target):
+        if filenames:
+            files += [ os.path.join(root, filename) for filename in filenames ]
+
+    for f in files:
+        _decrypt_file(f, password)
+
+    shutil.rmtree(path)
+
+def _decrypt_file(path, password):
     parent = pathlib.Path(abs_path).parent
     basename = os.path.basename(abs_path)
 
+def decrypt(path, password):
+    logger.info(path)
+    logger.info(password)
+
+    if os.path.isdir(abs_path):
+        _decrypt_directory(abs_path, password)
+    else:
+        _decrypt_file(abs_path, password)
+
+def main(path):
+    abs_path = os.path.abspath(path)
+
     logger.info(abs_path)
-    logger.info(parent)
     logger.info(basename)
-    files = []
     m = hashlib.sha256()
 
     if os.path.exists(abs_path):
         m.update(getpass.getpass("password: ").encode())
         password = m.digest()
-        if "co_" in path:
-            if os.path.isdir(abs_path):
-                target = os.path.join(parent, basename.replace("co_", ""))
-                shutil.copytree(abs_path, target)
-                shutil.rmtree(abs_path)
-                for root, _, filenames in os.walk(target):
-                    if filenames:
-                        files += [ os.path.join(root, filename) for filename in filenames ]
-                for file in files:
-                    decrypt(file, password)
-            else:
-                decrypt(abs_path, password)
+        if basename.startswith('co_'):
+            decrypt(abs_path, password)
         else:
-            # encrypt
-            if os.path.isdir(abs_path):
-                target = os.path.join(parent, "co_{}".format(basename))
-                shutil.copytree(abs_path, target)
-                shutil.rmtree(abs_path)
-                for root, _, filenames in os.walk(target):
-                    if filenames:
-                        files += [ os.path.join(root, filename) for filename in filenames ]
-                for file in files:
-                    encrypt(file, password)
-            else:
-                encrypt(abs_path, password)
-        logger.info(files)
-        
+            encrypt(abs_path, password)
     else:
         raise AttributeError("Not valid path")
 

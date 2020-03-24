@@ -5,7 +5,9 @@ import unittest
 
 # MyCryptTest modules
 from c import get_system
-from c import trace
+from c import _
+from c import get_system
+from c import get_system
 
 # logger
 from logger import Logger
@@ -21,9 +23,3 @@ class MyCryptoTest(unittest.TestCase):
 
         self.assertEqual(platform.system(), system)
         self.assertNotEqual(platform.system(), "not_supported")
-
-    def test_trace(self):
-        path = 'test_dir'
-        trace(os.path.join(os.path.join(os.path.abspath(os.curdir), 'tests'), path), None)
-
-        self.assertEqual(True, True)
