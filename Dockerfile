@@ -22,7 +22,7 @@ ENV PROJECT=${PROJECT}
 
 # Install Alpine Packages
 RUN apk update && apk upgrade
-RUN apk add --no-cached gcc g++ make libffi-dev openssl-dev
+RUN apk add --no-cache gcc g++ make libffi-dev openssl-dev
 RUN pip install --upgrade pip
 
 # Create Project by Default Settings
